@@ -36,26 +36,25 @@ class App extends Component {
     addOrRemoveHost({ target }) {
         let { proxiedSites } = this.state;
 
-        if (target.checked && !proxiedSites.includes(target.value)) {
+        if (target.checked) {
             proxiedSites.push(target.value);
-        } else if (!target.checked && proxiedSites.includes(target.value)) {
+        } else {
             proxiedSites = proxiedSites.filter(e => e !== target.value);
         }
 
         this.setState({ proxiedSites: proxiedSites }, () => {
             chrome.storage.local.set({ proxiedSites: proxiedSites });
+            chrome.runtime.sendMessage({ action: 'updateProxySettings' });
         });
     }
 
     renderVisitedSites() {
-        if (!this.state.visitedSites.length) {
-            return;
-        }
+        const { visitedSites } = this.state;
 
         return (
             <div class="divide-y">
                 {
-                    this.state.visitedSites.map((host, index) => (
+                    visitedSites.sort().map((host, index) => (
                         <div key={index}>
                             <label class="row">
                                 <span class="col">{host}</span>

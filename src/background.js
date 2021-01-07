@@ -15,9 +15,13 @@ const PROXY_PL = "HTTPS pl2.truenet.monster:443; DIRECT";
 console.log('HyperGate starting...');
 
 chrome.runtime.onStartup.addListener(function () {
-  chrome.storage.local.remove('visitedSites')
+  chrome.storage.local.remove('visitedSites', () => {
+    console.log('Clear visited sites.');
+  });
 
-  console.log('Clear visited sites.');
+  chrome.proxy.settings.clear({ scope: "regular" }, () => {
+    console.log('Clear old proxy settings.');
+  });
 });
 
 async function getProxiedSites() {
@@ -42,6 +46,38 @@ async function getVisitedSites() {
 
 }
 
+async function updateProxySettings() {
+  let proxiedSites = await getProxiedSites();
+
+  if (!proxiedSites) {
+    proxiedSites = [];
+  }
+
+  const proxyList = [
+    'HTTPS proxy-ssl.antizapret.prostovpn.org:3143',
+    'PROXY proxy-nossl.antizapret.prostovpn.org:29976',
+  ];
+
+  const proxyConfig = {
+    mode: 'pac_script',
+    pacScript: {
+      data: "function FindProxyForURL(url, host) { var schema = url.substring(0, 5); if (schema != 'https' && schema != 'http:') { return 'DIRECT'; } var sites = " + JSON.stringify(proxiedSites) + "; if(sites.includes(host)) {  return '" + proxyList.join('; ') + "; DIRECT'; } return 'DIRECT'; }"
+    }
+  };
+
+  chrome.proxy.settings.set({ value: proxyConfig, scope: "regular" }, () => {
+    console.log('Use proxy for ' + JSON.stringify(proxiedSites));
+  });
+}
+
+chrome.extension.onMessage.addListener( (request)  => {
+  if(request.action === 'updateProxySettings') {
+    updateProxySettings();
+  }
+});
+
+updateProxySettings();
+
 chrome.webRequest.onBeforeRequest.addListener(
   async (request) => {
     const url = new URL(request.url);
@@ -55,6 +91,10 @@ chrome.webRequest.onBeforeRequest.addListener(
     let proxiedSites = await getProxiedSites();
     let visitedSites = await getVisitedSites();
 
+    if (!proxiedSites) {
+      proxiedSites = [];
+    }
+
     if (!visitedSites) {
       visitedSites = proxiedSites;
     }
@@ -65,26 +105,6 @@ chrome.webRequest.onBeforeRequest.addListener(
       // save changes in to storage
       chrome.storage.local.set({ visitedSites: visitedSites });
     }
-
-    if (proxiedSites.includes(host)) {
-      const proxyList = [
-        'HTTPS proxy-ssl.antizapret.prostovpn.org:3143',
-        'PROXY proxy-nossl.antizapret.prostovpn.org:29976',
-      ];
-
-      const proxyConfig = {
-        mode: 'pac_script',
-        pacScript: {
-          data: "function FindProxyForURL(url, host) { var schema = url.substring(0, 5); if (schema != 'https' && schema != 'http:') { return 'DIRECT'; } if('" + host + "' == host) {  return '" + proxyList.join('; ') + "; DIRECT'; } return 'DIRECT'; }"
-        }
-      };
-
-      chrome.proxy.settings.set({ value: proxyConfig, scope: "regular" }, () => {
-        console.log('Used proxy to ' + host);
-      });
-    }
-
-    return false;
   },
   {
     urls: ["<all_urls>"],
