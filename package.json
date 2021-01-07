@@ -1,0 +1,28 @@
+{
+    "name": "hyper-gate",
+    "version": "0.0.1",
+    "description": "",
+    "scripts": {
+        "watch": "webpack --progress --colors --watch",
+        "build": "webpack --progress --colors --optimize-minimize --optimize-occurrence-order --optimize-dedupe --optimize-max-chunks 15 --optimize-min-chunk-size 10000"
+    },
+    "keywords": [],
+    "license": "ISC",
+    "devDependencies": {
+        "@babel/cli": "^7.12.1",
+        "@babel/core": "^7.12.1",
+        "@babel/preset-env": "^7.12.1",
+        "@babel/preset-react": "^7.12.1",
+        "@babel/plugin-proposal-class-properties": "^7.8.3",
+        "babel-loader": "^8.1.0",
+        "css-loader": "^5.0.0",
+        "style-loader": "^2.0.0",
+        "copy-webpack-plugin": "^6.2.1",
+        "webpack": "^4.41.2",
+        "webpack-cli": "^3.1.1"
+    },
+    "dependencies": {
+        "react": "^16.14.0",
+        "react-dom": "^16.14.0"
+    }
+}

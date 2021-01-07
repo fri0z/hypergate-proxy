@@ -1,0 +1,30 @@
+{
+  "name": "HyperGate Proxy",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "Extension \"HyperGate Proxy\" provides access to blocked sites though proxy server",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": true
+  },
+  "permissions": [
+    "idle",
+    "proxy",
+    "storage",
+    "webRequest",
+    "webRequestBlocking",
+    "<all_urls>"
+  ],
+  "browser_action": {
+    "default_icon": "icons/icon19.png",
+    "default_title": "HyperGate Proxy",
+    "default_popup": "popup.html"
+  }
+}

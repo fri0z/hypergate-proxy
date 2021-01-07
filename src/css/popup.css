@@ -1,0 +1,12 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 400px;
+    height: 300px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.browser-action > .card {
+    min-height: 100%;
+}
