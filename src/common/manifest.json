@@ -1,6 +1,6 @@
 {
   "name": "HyperGate Proxy",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "manifest_version": 2,
   "description": "Extension \"HyperGate Proxy\" provides access to blocked sites though proxy server",
   "icons": {

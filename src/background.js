@@ -53,21 +53,27 @@ async function updateProxySettings() {
     proxiedSites = [];
   }
 
-  const proxyList = [
+  let proxyList = [
     'HTTPS proxy-ssl.antizapret.prostovpn.org:3143',
     'PROXY proxy-nossl.antizapret.prostovpn.org:29976',
   ];
+  
+  proxyList  = ARRAY_PROXY_UK;
 
   const proxyConfig = {
     mode: 'pac_script',
     pacScript: {
-      data: "function FindProxyForURL(url, host) { var schema = url.substring(0, 5); if (schema != 'https' && schema != 'http:') { return 'DIRECT'; } var sites = " + JSON.stringify(proxiedSites) + "; if(sites.includes(host)) {  return '" + proxyList.join('; ') + "; DIRECT'; } return 'DIRECT'; }"
+      data: "function FindProxyForURL(url, host) { console.log(url, host); var schema = url.substring(0, 5); if (schema != 'https' && schema != 'http:') { return 'DIRECT'; } var sites = " + JSON.stringify(proxiedSites) + "; if(sites.includes(host)) {  return '" + proxyList.join('; ') + "; DIRECT'; } return 'DIRECT'; }"
     }
   };
 
   chrome.proxy.settings.set({ value: proxyConfig, scope: "regular" }, () => {
     console.log('Use proxy for ' + JSON.stringify(proxiedSites));
   });
+
+  chrome.proxy.onProxyError.addListener((details) => {
+    console.error(details);
+  })
 }
 
 chrome.extension.onMessage.addListener( (request)  => {
