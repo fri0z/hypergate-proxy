@@ -58,8 +58,6 @@ async function updateProxySettings() {
     'PROXY proxy-nossl.antizapret.prostovpn.org:29976',
   ];
   
-  proxyList  = ARRAY_PROXY_UK;
-
   const proxyConfig = {
     mode: 'pac_script',
     pacScript: {
