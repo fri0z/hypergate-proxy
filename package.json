@@ -1,6 +1,6 @@
 {
     "name": "hyper-gate",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "",
     "scripts": {
         "watch": "webpack --progress --colors --watch",
