@@ -52,15 +52,15 @@ class App extends Component {
         const { visitedSites } = this.state;
 
         return (
-            <div class="divide-y">
+            <div className="divide-y">
                 {
                     visitedSites.sort().map((host, index) => (
                         <div key={index}>
-                            <label class="row">
-                                <span class="col">{host}</span>
-                                <span class="col-auto">
-                                    <label class="form-check form-check-single form-switch">
-                                        <input class="form-check-input" type="checkbox" checked={this.state.proxiedSites.includes(host)} value={host} onClick={this.addOrRemoveHost.bind(this)} />
+                            <label className="row">
+                                <span className="col">{host}</span>
+                                <span className="col-auto">
+                                    <label className="form-check form-check-single form-switch">
+                                        <input className="form-check-input" type="checkbox" checked={this.state.proxiedSites.includes(host)} value={host} onClick={this.addOrRemoveHost.bind(this)} />
                                     </label>
                                 </span>
                             </label>
@@ -75,13 +75,13 @@ class App extends Component {
         return (
             <div className="browser-action">
                 <div className="card border-0">
-                    <div class="card-header d-flex">
-                        <h3 class="card-title">Add a site to the list</h3>
-                        <a class="btn btn-sm ml-auto" href="javascript:void(0)" onClick={this.clearVisitedSites.bind(this)}>
+                    <div className="card-header d-flex">
+                        <h3 className="card-title">Add a site to the list</h3>
+                        <a className="btn btn-sm ml-auto" href="#" onClick={this.clearVisitedSites.bind(this)}>
                             Clear visited sites
                         </a>
                     </div>
-                    <div class="card-body">
+                    <div className="card-body">
                         {this.renderVisitedSites()}
                     </div>
                 </div>
